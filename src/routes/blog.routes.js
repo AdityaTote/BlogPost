@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { checkAuthCookie } from "./middlewares/auth.middlewares.js"
+import { checkAuthCookie } from "../middlewares/auth.middlewares.js"
 import { handleAddBlogPageDisplay,
          handleAddBlog,
          handleBlogById } from "../controllers/blog.controllers.js"

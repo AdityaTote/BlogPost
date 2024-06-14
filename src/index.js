@@ -3,7 +3,9 @@ import path from "path";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-dotenv.config();
+dotenv.config({
+    path: "../.env"
+});
 
 const app = express();
 const port = process.env.PORT;
@@ -16,7 +18,7 @@ connect(`${mongodb_Url}/blogs-db`)
 
 // setting views path
 app.set("view engine","ejs")
-app.set("views",path.resolve("./views"))
+app.set("views",path.resolve("../views"))
 
 // Middlewares
 
