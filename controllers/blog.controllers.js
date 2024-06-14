@@ -25,6 +25,7 @@ async function handleAddBlog(req,res){
 // display blog and comment on it by id
 async function handleBlogById(req,res){
     const id = req.params.id;
+    
     const blog = await Blog.findById(id).populate("createdBy");
     const comments = await Comment.find({ blogId: id}).populate("createdBy");
     
