@@ -10,31 +10,43 @@ function handleAddBlogPageDisplay(req,res){
 
 // send blog data to db and render on webpage
 async function handleAddBlog(req,res){
-    const {  title, content } = req.body;
+    const { title, content } = req.body;
 
-    const blog = await Blog.create({
-        title,
-        content,
-        createdBy: req.user._id,
-        coverImg: `/uploads/${req.file.filename}`,
-    });
+    if(!title && !content){
+        return res.json("Entre tilte and content for blog")
+    }
 
-    res.redirect(`/blogs/${blog._id}`);
+    try{
+        const blog = await Blog.create({
+            title,
+            content,
+            createdBy: req.user._id,
+            coverImg: `/uploads/${req.file.filename}`,
+        });
+    
+        res.redirect(`/blogs/${blog._id}`);
+    } catch(error){
+        return res.json("Unable to add blog")
+    }
 }
 
 // display blog and comment on it by id
 async function handleBlogById(req,res){
     const id = req.params.id;
     
-    const blog = await Blog.findById(id).populate("createdBy");
-    const comments = await Comment.find({ blogId: id}).populate("createdBy");
-    
+    try {
+        const blog = await Blog.findById(id).populate("createdBy");
+        const comments = await Comment.find({ blogId: id}).populate("createdBy");
 
-    return res.render("blog",{
-        user: req.user,
-        blog,
-        comments,
-    })
+        return res.render("blog",{
+            user: req.user,
+            blog,
+            comments,
+        })
+
+    } catch (error) {
+        return res.json("Unable to display blog")
+    }
 }
 
 export {
